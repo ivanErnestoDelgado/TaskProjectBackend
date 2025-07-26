@@ -12,6 +12,10 @@ app.use(express.json());
 const authRoutes = require('./features/auth/auth.routes');
 app.use('/api/auth', authRoutes);
 
+const taskRoutes = require("./features/task/task.routes");
+
+app.use("/api/tasks", taskRoutes);
+
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
