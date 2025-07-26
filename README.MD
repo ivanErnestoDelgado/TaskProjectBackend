@@ -1,0 +1,1 @@
+A task manager REST API maked using Express.js framework in node.js with node feature based design pattern, the models are managed with Prisma ORM with PostgreSQL database.
