@@ -4,7 +4,7 @@ const taskService = require('./task.service');
 // Obtener todas las tareas del usuario autenticado
 const getTasks = async (req, res) => {
   try {
-    const tasks = await taskService.getTasks(req.user.userId);
+    const tasks = await taskService.getTasks(req.user.userId,req.query);
     res.json(tasks);
   } catch (err) {
     console.log(err);
