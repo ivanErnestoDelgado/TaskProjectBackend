@@ -1,11 +1,13 @@
 const jwt= require('jsonwebtoken');
+const {UnauthorizedError}=require('../utils/errors')
 
 const authMiddleware=(req, res, next) => {
     const authHeader=req.headers.authorization;
 
 
     if(!authHeader || !authHeader.startsWith("Bearer ")){
-        return res.status(401).json({message: "No token provided"});
+        //Pasa directo al error handler si el token no es proporcionado
+        return next(new UnauthorizedError("Token not provided"));
     }
 
     const token= authHeader.split(" ")[1];
@@ -16,7 +18,8 @@ const authMiddleware=(req, res, next) => {
         next();
 
     } catch (error) {
-        return  res.status(401).json({message: "Invalid Token"});
+        //Si el token no pasa la prueba se pasa al error handler como token invalido
+        return  next(new UnauthorizedError("Invalid Token"));
     }
 
 };
