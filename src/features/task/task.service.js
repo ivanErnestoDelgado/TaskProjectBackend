@@ -1,4 +1,5 @@
 const prisma= require('../../shared/config/db');
+const {ForbiddenError,NotFoundError}=require('../../shared/utils/errors')
 
 //Funciones auxiliares
 function idsAreNotEqual(taskUserId, requestUserId) {
@@ -50,7 +51,7 @@ const getSpecificTask=async (taskId, requestUserId) => {
     });
 
     if (!task){
-        throw new Error("Tarea inexistente");
+        throw new NotFoundError("Task not found");
     }
 
     //sacamos la id del usuario de la task para comparar y posteriormente saber si coinciden los usuarios
@@ -58,7 +59,7 @@ const getSpecificTask=async (taskId, requestUserId) => {
 
 
     if (idsAreNotEqual(taskUserId, requestUserId)) {
-        throw new Error("Usuario no autorizado");
+        throw new ForbiddenError("The consulted task not belongs you");
     }
 
     return task;
@@ -66,15 +67,6 @@ const getSpecificTask=async (taskId, requestUserId) => {
 
 const createTask= async (data,userId) => {
     const {title,description}=data;
-    //Validaciones
-    if(!title){
-        throw new Error("Campo title no proporcionado");
-    }
-
-    if (typeof title !=='string') {
-        throw new Error("El campo title tiene que ser de tipo String");
-    }
-
     return await prisma.task.create({
         data:{
             title,
@@ -91,15 +83,18 @@ const updateTask=async (requestUserId,taskId,data) => {
         where:{id:taskId},
     });
     
-    const taskUserId=task.userId;
 
     if (!task){
-        throw new Error("Tarea inexistente")
+        throw new NotFoundError("Task not found");
     }
 
+    const taskUserId=task.userId;
+
     if (idsAreNotEqual(taskUserId, requestUserId)) {
-        throw new Error("Usuario no autorizado");
+        throw new ForbiddenError("The consulted task not belongs you");
     }
+
+    
     
     return await prisma.task.update({
         where:{id:taskId},
@@ -112,14 +107,15 @@ const deleteTask=async (requestUserId,taskId) => {
         where:{id:taskId},
     });
 
-    const taskUserId=task.userId;
 
     if (!task){
-        throw new Error("Tarea inexistente")
+        throw new NotFoundError("Task not found");
     }
 
+    const taskUserId=task.userId;
+
     if (idsAreNotEqual(taskUserId, requestUserId)) {
-        throw new Error("Usuario no autorizado");
+        throw new ForbiddenError("The consulted task not belongs you");
     }
     
     await prisma.task.delete({
