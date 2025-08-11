@@ -38,7 +38,7 @@ const updateTask = async (req, res, next) => {
   try {
     const { id } = req.params;
     const updatedTask = await taskService.updateTask(req.user.userId, id, req.body);
-    res.status(HTTP_STATUS.200).json(updatedTask);
+    res.status(HTTP_STATUS.OK).json(updatedTask);
   } catch (err) {
     next(err);
   }
