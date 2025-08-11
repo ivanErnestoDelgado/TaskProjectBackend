@@ -1,3 +1,4 @@
+const HTTP_STATUS = require('../constants/httpStatusCodes');
 const {HttpError}=require('../utils/errors')
 
 const errorHandler= (err,req,res,next) => {
@@ -11,7 +12,7 @@ const errorHandler= (err,req,res,next) => {
 
     console.error(err.stack);
 
-    return res.status(500).json({
+    return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
         succes:false,
         message: "Internal server error"
     });
