@@ -1,5 +1,5 @@
 const { z } = require('zod');
-
+const {isCuid}= require('../../shared/utils/globalValidators')
 
 //objetos zod con validaciones predefinidas para no repetir codigo xdxdxd
 const titleStandarZodValidator=z.string().min(1,"The title is required").max(100,"Max number of allowed title characters is 100");
@@ -28,8 +28,13 @@ const getTaskQuerySchema=z.object({
     limit: numberFromStringZodValidator.optional(),
 });
 
+const idParamSchema=z.object({
+    id: z.string().refine(isCuid,{message: "Invalid CUID format"})
+});
+
 module.exports={
     createTaskSchema,
     updateTaskSchema,
-    getTaskQuerySchema
+    getTaskQuerySchema,
+    idParamSchema
 };

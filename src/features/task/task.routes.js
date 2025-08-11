@@ -6,7 +6,8 @@ const validate = require('../../shared/middlewares/validateMiddleware');
 const {
     createTaskSchema,
     updateTaskSchema,
-    getTaskQuerySchema
+    getTaskQuerySchema,
+    idParamSchema
 }=require('./task.validator')
 
 
@@ -25,6 +26,9 @@ router.get(
 
 router.get(
     "/:id",
+    validate({
+        params: idParamSchema
+    }),
     taskController.getSpecificTask
 );
 
@@ -39,6 +43,7 @@ router.post(
 router.put(
     "/:id",
     validate({
+        params: idParamSchema,
         body: updateTaskSchema
     }), 
     taskController.updateTask
@@ -46,6 +51,9 @@ router.put(
 
 router.delete(
     "/:id", 
+    validate({
+        params:idParamSchema
+    }),
     taskController.deleteTask
 );
 
