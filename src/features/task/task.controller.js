@@ -6,7 +6,7 @@ const taskService = require('./task.service');
 const getTasks = async (req, res, next) => {
   try {
     const tasks = await taskService.getTasks(req.user.userId,req.query);
-    res.json(tasks);
+    res.status(HTTP_STATUS.OK).json(tasks);
   } catch (err) {
     next(err);
   }
@@ -17,7 +17,7 @@ const getSpecificTask=async (req,res,next) => {
   try {
     const { id }=req.params;
     const task= await taskService.getSpecificTask(id,req.user.userId);
-    res.json(task);
+    res.status(HTTP_STATUS.OK).json(task);
   } catch (err) {
     next(err);
   }
@@ -38,7 +38,7 @@ const updateTask = async (req, res, next) => {
   try {
     const { id } = req.params;
     const updatedTask = await taskService.updateTask(req.user.userId, id, req.body);
-    res.json(updatedTask);
+    res.status(HTTP_STATUS.200).json(updatedTask);
   } catch (err) {
     next(err);
   }
