@@ -13,7 +13,7 @@ const register = async ({ email, password, name }) => {
     data: { email, password: hashedPassword , name},
   });
 
-  return { message: 'Successfuly registed user', userId: user.id };
+  return { message: 'Successfuly registered user', userId: user.id };
 };
 
 const login = async ({ email, password }) => {

@@ -1,3 +1,4 @@
+const HTTP_STATUS = require('../../shared/constants/httpStatusCodes');
 const taskService = require('./task.service');
 
 
@@ -26,7 +27,7 @@ const getSpecificTask=async (req,res,next) => {
 const createTask = async (req, res, next) => {
   try {
     const task = await taskService.createTask( req.body, req.user.userId);
-    res.status(201).json(task);
+    res.status(HTTP_STATUS.CREATED).json(task);
   } catch (err) {
     next(err);
   }
@@ -48,7 +49,7 @@ const deleteTask = async (req, res, next) => {
   try {
     const { id } = req.params;
     await taskService.deleteTask(req.user.userId, id);
-    res.status(204).send();
+    res.status(HTTP_STATUS.NO_CONTENT).send();
   } catch (err) {
     next(err);
   }
